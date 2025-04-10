@@ -1,0 +1,27 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+before_script:
+  - python -V
+  - pip install --upgrade pip
+
+build:
+  stage: build
+  script:
+    - pip install -r requirements.txt
+
+test:
+  stage: test
+  script:
+    - pytest tests/
+
+deploy:
+  stage: deploy
+  script:
+    - docker build -t legal-ai-api .
+    - echo "Docker image built successfully"
